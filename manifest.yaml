@@ -1,0 +1,95 @@
+namespace: /nginx
+
+common:
+  metadata:
+    publisher: monk.io
+    email: jakub@monk.io
+    tags: nginx, webserver, ssl, certbot
+    icon: https://assets.monk.io/icons/nginx-logo-FF65602A76-seeklogo.com.png
+    description: Standard webserver with a certbot container as sidecar to generate letsencrypt certificate
+    name: NGINX Server with Certbot
+    version: 1.0
+    website: https://www.nginx.com/
+    source: https://github.com/nginx/nginx
+
+  variables:
+    email:
+      type: string
+      value: do-not-reply@domain.com
+    domain:
+      type: string
+      value: domain.com
+    use-certbot:
+      type: string
+      value: true
+    nginx-hostname:
+      type: string
+      value: <- get-hostname("nginx/ssl", "nginx")
+
+  files:
+    index-html:
+      container: nginx
+      path: /usr/share/nginx/html/index.html
+      mode: 0644
+      contents: <<< files/index.html
+
+basic:
+  defines: runnable
+  inherits: /nginx/common
+
+  containers:
+    nginx:
+      image-tag: latest
+      image: nginx
+      ports:
+        - 80:80
+
+ssl:
+  defines: runnable
+  inherits: /nginx/basic
+
+  files:
+    config-init:
+      container: nginx
+      path: /tmp/init.conf
+      mode: 0644
+      contents: <<< files/letsencrypt_init.conf
+
+    config-running:
+      container: nginx
+      path: /tmp/running.conf
+      mode: 0644
+      contents: <<< files/letsencrypt_running.conf
+
+    entrypoint-nginx:
+      container: nginx
+      path: /docker-entrypoint.d/99-init-config.sh
+      mode: 0755
+      contents: <<< files/entrypoint-nginx.sh
+
+    entrypoint-certbot:
+      container: certbot
+      path: /entrypoint.sh
+      mode: 0755
+      contents: <<< files/entrypoint-certbot.sh
+
+  containers:
+    nginx:
+      ports:
+        - 80:80
+        - 443:443
+      paths:
+        - <- `${monk-volume-path}/certbot/conf:/etc/letsencrypt`
+        - <- `${monk-volume-path}/certbot/www:/var/certbot`
+      environment:
+        - <- `USE_CERTBOT=${use-certbot}`
+
+    certbot:
+      image: certbot/certbot
+      image-tag: latest
+      paths:
+        - <- `${monk-volume-path}/certbot/conf:/etc/letsencrypt`
+        - <- `${monk-volume-path}/certbot/www:/var/certbot`
+      bash: /entrypoint.sh
+      environment:
+        - <- `USE_CERTBOT=${use-certbot}`
