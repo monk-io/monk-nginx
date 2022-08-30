@@ -7,7 +7,20 @@ This template contains two runnable definitions:
 * `nginx/basic` - which is standard nginx configuration that runs on port 80
 * `nginx/ssl` - spawns with a certbot as a sidecar container and will automatically generate Letsencrypt certificate.
 
-
+  - [Prerequisites](#prerequisites)
+    - [Make sure monkd is running.](#make-sure-monkd-is-running)
+    - [Clone Repository](#clone-repository)
+    - [Load Template](#load-template)
+    - [Verify if it's loaded correctly](#verify-if-its-loaded-correctly)
+  - [Deploy basic Nginx](#deploy-basic-nginx)
+    - [Start runnable](#start-runnable)
+    - [Check if it works](#check-if-it-works)
+  - [Deploy Nginx with certbot and ssl certificates](#deploy-nginx-with-certbot-and-ssl-certificates)
+    - [Start runnable](#start-runnable-1)
+    - [Check the logs](#check-the-logs)
+    - [Check the connectivity](#check-the-connectivity)
+  - [Variables](#variables)
+  - [Stop, remove and clean up workloads and templates](#stop-remove-and-clean-up-workloads-and-templates)
 
 ## Prerequisites
 - [Install Monk](https://docs.monk.io/docs/get-monk)
