@@ -1,7 +1,7 @@
-Nginx meet Monk
+Nginx meets Monk
 ===
 
-This repository contains Monk.io template to deploy Nginx either locally or on cloud of your choice (AWS, GCP, Azure, Digital Ocean).  
+This repository contains Monk.io template to deploy Nginx either locally or on cloud of your choice (AWS, GCP, Azure, Digital Ocean).
 
 This template contains two runnable definitions:
 * `nginx/basic` - which is standard nginx configuration that runs on port 80
@@ -56,9 +56,9 @@ $ monk load manifest.yaml
 $ monk list -l nginx
 
 ✔ Got the list
-Type      Template     Repository  Version  Tags                            
-runnable  nginx/basic  local       -        nginx, webserver, ssl, certbot  
-runnable  nginx/ssl    local       -        nginx, webserver, ssl, certbot  
+Type      Template     Repository  Version  Tags
+runnable  nginx/basic  local       -        nginx, webserver, ssl, certbot
+runnable  nginx/ssl    local       -        nginx, webserver, ssl, certbot
 ```
 
 ## Deploy basic Nginx
@@ -78,8 +78,8 @@ $ monk run nginx/basic
 
 🔩 templates/local/nginx/basic
  └─🧊 Peer set0
-    └─🔩 templates/local/nginx/basic 
-       └─📦 28e821a236957d6d861141ea33f435a6-local-nginx-basic-nginx 
+    └─🔩 templates/local/nginx/basic
+       └─📦 28e821a236957d6d861141ea33f435a6-local-nginx-basic-nginx
           ├─🧩 nginx:latest
           └─🔌 open 54.211.27.40:80 -> 80
 
@@ -119,7 +119,7 @@ font-family: Tahoma, Verdana, Arial, sans-serif; }
 
 ## Deploy Nginx with certbot and ssl certificates
 
-### Start runnable 
+### Start runnable
 
 ``` bash
 $ monk run nginx/ssl
@@ -134,16 +134,16 @@ $ monk run nginx/ssl
 
 🔩 templates/local/nginx/ssl
  └─🧊 Peer set0
-    ├─🔩 templates/local/nginx/ssl 
-    │  └─📦 7da29d64a1dabb17c4d2184aa5a0ff61-local-nginx-ssl-nginx 
-    │     ├─🧩 nginx:latest                                   
+    ├─🔩 templates/local/nginx/ssl
+    │  └─📦 7da29d64a1dabb17c4d2184aa5a0ff61-local-nginx-ssl-nginx
+    │     ├─🧩 nginx:latest
     │     ├─💾 /var/lib/monkd/volumes/certbot/conf -> /etc/letsencrypt
     │     ├─💾 /var/lib/monkd/volumes/certbot/www -> /var/certbot
-    │     ├─🔌 open 54.211.27.40:443 -> 443        
-    │     └─🔌 open 54.211.27.40:80 -> 80          
-    └─🔩 templates/local/nginx/ssl 
-       └─📦 40a7805b372e2f60135c2c4bd2ec5b3f-local-nginx-ssl-certbot 
-          ├─🧩 certbot/certbot:latest                         
+    │     ├─🔌 open 54.211.27.40:443 -> 443
+    │     └─🔌 open 54.211.27.40:80 -> 80
+    └─🔩 templates/local/nginx/ssl
+       └─📦 40a7805b372e2f60135c2c4bd2ec5b3f-local-nginx-ssl-certbot
+          ├─🧩 certbot/certbot:latest
           ├─💾 /var/lib/monkd/volumes/certbot/conf -> /etc/letsencrypt
           └─💾 /var/lib/monkd/volumes/certbot/www -> /var/certbot
 
@@ -157,7 +157,7 @@ $ monk run nginx/ssl
 ### Check the logs
 
 ``` bash
-$ monk logs 
+$ monk logs
 ? Select container: 40a7805b372e2f60135c2c4bd2ec5b3f-local-nginx-ssl-certbot
 Tue Aug 30 18:53:41 UTC 2022 Waiting for nginx to start
 ...
@@ -214,7 +214,7 @@ Tue Aug 30 18:53:59 UTC 2022 Detected certificate killing temporary webserver
 ...
 Tue Aug 30 18:53:59 UTC 2022 Starting webserver
 2022/08/30 18:53:59 [notice] 378#378: nginx/1.23.1
-2022/08/30 18:53:59 [notice] 378#378: built by gcc 10.2.1 20210110 (Debian 10.2.1-6) 
+2022/08/30 18:53:59 [notice] 378#378: built by gcc 10.2.1 20210110 (Debian 10.2.1-6)
 2022/08/30 18:53:59 [notice] 378#378: OS: Linux 5.15.0-1004-aws
 2022/08/30 18:53:59 [notice] 378#378: getrlimit(RLIMIT_NOFILE): 1048576:1048576
 2022/08/30 18:53:59 [notice] 378#378: start worker processes
@@ -253,11 +253,11 @@ font-family: Tahoma, Verdana, Arial, sans-serif; }
 ```
 ## Variables
 
-The variables are stored in `manifest.yaml` file.  
+The variables are stored in `manifest.yaml` file.
 You can quickly setup by editing the values there.
 
 | Variable       | Description                                                   | Default                               |
-|----------------|---------------------------------------------------------------|---------------------------------------|
+| -------------- | ------------------------------------------------------------- | ------------------------------------- |
 | email          | Email where the Letsencrypt notifications will be send to     | do-not-reply@domain.com               |
 | domain         | Domain that the certificate needs to be requested for         | domain.com                            |
 | use-certbot    | Whether we should use a certbot                               | true                                  |
