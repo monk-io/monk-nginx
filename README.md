@@ -256,12 +256,11 @@ font-family: Tahoma, Verdana, Arial, sans-serif; }
 The variables are stored in `manifest.yaml` file.
 You can quickly setup by editing the values there.
 
-| Variable       | Description                                                   | Default                               |
-| -------------- | ------------------------------------------------------------- | ------------------------------------- |
-| email          | Email where the Letsencrypt notifications will be send to     | do-not-reply@domain.com               |
-| domain         | Domain that the certificate needs to be requested for         | domain.com                            |
-| use-certbot    | Whether we should use a certbot                               | true                                  |
-| nginx-hostname | Internal variable to determine dns address of nginx container | <- get-hostname("nginx/ssl", "nginx") |
+| Variable    | Description                                               | Default                 |
+| ----------- | --------------------------------------------------------- | ----------------------- |
+| email       | Email where the Letsencrypt notifications will be send to | do-not-reply@domain.com |
+| domain      | Domain that the certificate needs to be requested for     | domain.com              |
+| use-certbot | Whether we should use a certbot                           | true                    |
 
 ## Stop, remove and clean up workloads and templates
 

@@ -22,9 +22,6 @@ common:
     use-certbot:
       type: string
       value: true
-    nginx-hostname:
-      type: string
-      value: <- get-hostname("nginx/ssl", "nginx")
 
   files:
     index-html:
@@ -47,6 +44,18 @@ basic:
 ssl:
   defines: runnable
   inherits: /nginx/basic
+
+  services:
+    nginx:
+      container: nginx
+      port: 80
+      protocol: tcp
+
+  variables:
+    nginx-hostname:
+      type: string
+      value: <- connection-hostname("nginx")
+      env: NGINX_HOST
 
   files:
     config-init:

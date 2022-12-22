@@ -3,7 +3,7 @@
 if [ "${USE_CERTBOT}" = "true" ]; then
   while :; do
     echo "$(date) Waiting for nginx to start"
-    nc -vz {{ v "nginx-hostname" }} 80 2>/dev/null
+    nc -vz "${NGINX_HOST}" 80 2>/dev/null
     if [ "${?}" -eq 0 ]; then
       break
     fi
