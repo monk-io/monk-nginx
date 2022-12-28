@@ -1,4 +1,4 @@
-namespace: /nginx
+namespace: nginx
 
 common:
   metadata:
@@ -43,7 +43,12 @@ basic:
 
 ssl:
   defines: runnable
-  inherits: /nginx/basic
+  inherits: nginx/basic
+
+  connections:
+    nginx:
+      runnable: nginx/ssl
+      service: nginx
 
   services:
     nginx:
