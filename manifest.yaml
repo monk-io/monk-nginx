@@ -38,8 +38,8 @@ basic:
     nginx:
       image-tag: latest
       image: nginx
-      ports:
-        - 80:80
+      # ports:
+      #   - 80:80
 
 ssl:
   defines: runnable
@@ -55,6 +55,12 @@ ssl:
       container: nginx
       port: 80
       protocol: tcp
+      host-port: 80
+    nginx-ssl:
+      container: nginx
+      port: 443
+      protocol: tcp
+      host-port: 443
 
   variables:
     nginx-hostname:
@@ -89,9 +95,9 @@ ssl:
 
   containers:
     nginx:
-      ports:
-        - 80:80
-        - 443:443
+      # ports:
+      #   - 80:80
+      #   - 443:443
       paths:
         - <- `${monk-volume-path}/certbot/conf:/etc/letsencrypt`
         - <- `${monk-volume-path}/certbot/www:/var/certbot`
