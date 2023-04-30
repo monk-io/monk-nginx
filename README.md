@@ -1,9 +1,9 @@
-Nginx meets Monk
-===
+# Nginx meets Monk
 
 This repository contains Monk.io template to deploy Nginx either locally or on cloud of your choice (AWS, GCP, Azure, Digital Ocean).
 
 This template contains two runnable definitions:
+
 * `nginx/basic` - which is standard nginx configuration that runs on port 80
 * `nginx/ssl` - spawns with a certbot as a sidecar container and will automatically generate Letsencrypt certificate.
 
@@ -23,14 +23,15 @@ This template contains two runnable definitions:
   - [Stop, remove and clean up workloads and templates](#stop-remove-and-clean-up-workloads-and-templates)
 
 ## Prerequisites
+
 - [Install Monk](https://docs.monk.io/docs/get-monk)
 - [Register and Login Monk](https://docs.monk.io/docs/acc-and-auth)
 - [Add Cloud Provider](https://docs.monk.io/docs/cloud-provider)
 - [Add Instance](https://docs.monk.io/docs/multi-cloud)
 
-### Make sure monkd is running.
+### Make sure monkd is running
 
-``` bash
+```bash
 $ monk status
 daemon: ready
 auth: logged in
@@ -39,20 +40,20 @@ not connected to cluster
 
 ### Clone Repository
 
-``` bash
-$ git clone git@github.com:CuteAnonymousPanda/monk-nginx.git
+```bash
+git clone git@github.com:CuteAnonymousPanda/monk-nginx.git
 ```
 
 ### Load Template
 
-``` bash
-$ cd monk-nginx
-$ monk load manifest.yaml
+```bash
+cd monk-nginx
+monk load manifest.yaml
 ```
 
 ### Verify if it's loaded correctly
 
-``` bash
+```bash
 $ monk list -l nginx
 
 ✔ Got the list
@@ -65,7 +66,7 @@ runnable  nginx/ssl    local       -        nginx, webserver, ssl, certbot
 
 ### Start runnable
 
-``` bash
+```bash
 $ monk run nginx/basic
 ? Runnable local/nginx/basic
 ? Select tag to run [local/nginx/basic] on: aws
@@ -92,7 +93,7 @@ $ monk run nginx/basic
 
 ### Check if it works
 
-``` bash
+```bash
 $ curl 54.211.27.40:80
 <!DOCTYPE html>
 <html>
@@ -121,7 +122,7 @@ font-family: Tahoma, Verdana, Arial, sans-serif; }
 
 ### Start runnable
 
-``` bash
+```bash
 $ monk run nginx/ssl
 ? Select tag to run [local/nginx/ssl] on: aws
 ✔ Starting the job: local/nginx/ssl... DONE
@@ -156,7 +157,7 @@ $ monk run nginx/ssl
 
 ### Check the logs
 
-``` bash
+```bash
 $ monk logs
 ? Select container: 40a7805b372e2f60135c2c4bd2ec5b3f-local-nginx-ssl-certbot
 Tue Aug 30 18:53:41 UTC 2022 Waiting for nginx to start
@@ -187,7 +188,7 @@ If you like Certbot, please consider supporting our work by:
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ```
 
-``` bash
+```bash
 $ monk logs
 ? Select container: 7da29d64a1dabb17c4d2184aa5a0ff61-local-nginx-ssl-nginx
 /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
@@ -227,7 +228,7 @@ Tue Aug 30 18:53:59 UTC 2022 Starting webserver
 
 ### Check the connectivity
 
-``` bash
+```bash
 $ curl https://domain.com
 <!DOCTYPE html>
 <html>
@@ -251,27 +252,28 @@ font-family: Tahoma, Verdana, Arial, sans-serif; }
 </body>
 </html>
 ```
+
 ## Variables
 
 The variables are stored in `manifest.yaml` file.
 You can quickly setup by editing the values there.
 
-| Variable    | Description                                               | Default                 |
-| ----------- | --------------------------------------------------------- | ----------------------- |
-| email       | Email where the Letsencrypt notifications will be send to | do-not-reply@domain.com |
-| domain      | Domain that the certificate needs to be requested for     | domain.com              |
-| use-certbot | Whether we should use a certbot                           | true                    |
+| Variable    | Description                                               | Default                                               |
+| ----------- | --------------------------------------------------------- | ----------------------------------------------------- |
+| email       | Email where the Letsencrypt notifications will be send to | do-not-reply@domain.commailto:do-not-reply@domain.com |
+| domain      | Domain that the certificate needs to be requested for     | domain.com                                            |
+| use-certbot | Whether we should use a certbot                           | true                                                  |
 
 ## Stop, remove and clean up workloads and templates
 
-``` bash
-$ monk stop     nginx/basic
-$ monk purge    nginx/basic
-$ monk purge -x nginx/basic
+```bash
+monk stop     nginx/basic
+monk purge    nginx/basic
+monk purge -x nginx/basic
 ```
 
-``` bash
-$ monk stop     nginx/ssl
-$ monk purge    nginx/ssl
-$ monk purge -x nginx/ssl
+```bash
+monk stop     nginx/ssl
+monk purge    nginx/ssl
+monk purge -x nginx/ssl
 ```
