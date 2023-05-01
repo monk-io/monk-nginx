@@ -4,11 +4,8 @@ namespace: nginx
 common:
   metadata:
     publisher: monk.io
-    email: jakub@monk.io
-    tags: nginx, webserver, ssl, certbot
+    tags: Nginx Web Server, Reverse Proxy, Load Balancing, Content Delivery Network (CDN), HTTP Cache, SSL/TLS Encryption, IPv6 Support, Server-side Scripting, High Performance, Low Resource Usage, Open-Source Software, Scalability, Web Acceleration, Web Traffic Management, Dynamic Content Serving, Static Content Serving, High Availability, Security, Optimization, Web Application Firewall
     icon: https://assets.monk.io/icons/nginx-logo-FF65602A76-seeklogo.com.png
-    description: Standard webserver with a certbot container as sidecar to generate letsencrypt certificate
-    name: NGINX Server with Certbot
     version: 1.0
     website: https://www.nginx.com/
     source: https://github.com/nginx/nginx
@@ -31,11 +28,15 @@ common:
 
 basic:
   defines: runnable
-  inherits: /nginx/common
+  inherits: nginx/common
+  metadata:
+    name: NGINX
+    description: |
+      Basic Nginx server with just default configuration.
   containers:
     nginx:
-      image-tag: latest
       image: nginx
+      image-tag: latest
   services:
     nginx:
       container: nginx
@@ -46,6 +47,20 @@ basic:
 ssl:
   defines: runnable
   inherits: nginx/basic
+  metadata:
+    name: NGINX
+    description: |
+      Basic Nginx server with certbot sidecar container to generate valid letsencrypt certificate.
+
+      ---
+
+      Notes:
+
+      | Variable    | Description                                               | Default                                               |
+      | ----------- | --------------------------------------------------------- | ----------------------------------------------------- |
+      | email       | Email where the Letsencrypt notifications will be send to | do-not-reply@domain.commailto:do-not-reply@domain.com |
+      | domain      | Domain that the certificate needs to be requested for     | domain.com                                            |
+      | use-certbot | Whether we should use a certbot                           | true                                                  |
   connections:
     nginx:
       runnable: nginx/ssl
