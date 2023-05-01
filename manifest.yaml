@@ -171,7 +171,7 @@ reverse-proxy:
       type: string
     http-port:
       value: 80
-      type: string
+      type: int
     connection-name:
       type: string
       value: default
