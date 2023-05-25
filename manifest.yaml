@@ -4,7 +4,7 @@ namespace: nginx
 common:
   metadata:
     publisher: monk.io
-    tags: load balancing, dynamic content serving, security, reverse proxy, high performance, ssl/tls encryption, scalability, nginx web server, optimization, ipv6 support, web acceleration, web application firewall, content delivery network, high availability, low resource usage, static content serving, web traffic management, http cache
+    tags: load balancing, dynamic content serving, security, reverse proxy, high performance, ssl/tls encryption, scalability, static content serving, web traffic management, http cache, web server
     icon: https://assets.monk.io/icons/nginx-logo-FF65602A76-seeklogo.com.png
     version: 1.0
     website: https://www.nginx.com/
