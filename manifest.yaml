@@ -4,7 +4,7 @@ namespace: nginx
 common:
   metadata:
     publisher: monk.io
-    tags: Nginx Web Server, Reverse Proxy, Load Balancing, Content Delivery Network (CDN), HTTP Cache, SSL/TLS Encryption, IPv6 Support, Server-side Scripting, High Performance, Low Resource Usage, Open-Source Software, Scalability, Web Acceleration, Web Traffic Management, Dynamic Content Serving, Static Content Serving, High Availability, Security, Optimization, Web Application Firewall
+    tags: load balancing, dynamic content serving, security, reverse proxy, high performance, ssl/tls encryption, scalability, nginx web server, optimization, ipv6 support, web acceleration, web application firewall, content delivery network, high availability, low resource usage, static content serving, web traffic management, http cache
     icon: https://assets.monk.io/icons/nginx-logo-FF65602A76-seeklogo.com.png
     version: 1.0
     website: https://www.nginx.com/
@@ -124,7 +124,7 @@ reverse-proxy:
   metadata:
     publisher: monk.io
     email: jakub@monk.io
-    tags: nginx, webserver, ssl, certbot, reverse proxy, proxy for services
+    tags: certbot, webserver, nginx, ssl, proxy for services, reverse proxy
     icon: https://assets.monk.io/icons/nginx-logo-FF65602A76-seeklogo.com.png
     description: |
       Nginx reverse proxy to use in conjuction with monk and connection system.
