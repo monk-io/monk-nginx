@@ -194,7 +194,7 @@ reverse-proxy-do-not-use:
       this does nothing, please do not use.
       it just sleeps 300 with some basic config
     name: nginx-reverse-proxy for monk connections
-    shortname: nginx-reverse-proxy
+    shortname: nginx-reverse-proxy-do-not-use
     version: 1.0
     website: https://www.nginx.com/
     source: https://github.com/nginx/nginx
@@ -220,11 +220,11 @@ reverse-proxy-do-not-use:
       mode: 0644
       path: /etc/nginx/conf.d/default.conf
       container: nginx-reverse-proxy
-      bash: sleep 300
   containers:
     nginx-reverse-proxy:
       image: nginx
       image-tag: latest
+      bash: sleep 300
   variables:
     proxy-target-host:
       value: <- connection-hostname($connection-name)
