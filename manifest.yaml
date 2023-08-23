@@ -182,6 +182,9 @@ reverse-proxy:
     connection-name:
       type: string
       value: default
+  connections:
+    upstream:
+      description: "connect-to-your-runnable"
 
 reverse-proxy-do-not-use:
   defines: runnable
@@ -238,3 +241,6 @@ reverse-proxy-do-not-use:
     connection-name:
       type: string
       value: default
+  connections:
+    upstream:
+      description: "connect-to-your-runnable"
