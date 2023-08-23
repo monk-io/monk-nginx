@@ -171,17 +171,14 @@ reverse-proxy:
       image-tag: latest
   variables:
     proxy-target-host:
-      value: <- connection-hostname($connection-name)
+      value: <- connection-hostname("upstream")
       type: string
     proxy-target-port:
-      value: <- connection-port($connection-name)
+      value: <- connection-port("upstream")
       type: string
     http-port:
       value: 80
       type: int
-    connection-name:
-      type: string
-      value: default
   connections:
     upstream:
       description: "connect-to-your-runnable"
@@ -230,17 +227,14 @@ reverse-proxy-do-not-use:
       bash: sleep 300
   variables:
     proxy-target-host:
-      value: <- connection-hostname($connection-name)
+      value: <- connection-hostname("upstream")
       type: string
     proxy-target-port:
-      value: <- connection-port($connection-name)
+      value: <- connection-port("upstream")
       type: string
     http-port:
       value: 80
       type: int
-    connection-name:
-      type: string
-      value: default
   connections:
     upstream:
       description: "connect-to-your-runnable"
