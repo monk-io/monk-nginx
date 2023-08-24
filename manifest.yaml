@@ -182,6 +182,7 @@ reverse-proxy:
   connections:
     upstream:
       description: "connect-to-your-runnable"
+      optional: true
 
 reverse-proxy-do-not-use:
   defines: runnable
@@ -238,3 +239,4 @@ reverse-proxy-do-not-use:
   connections:
     upstream:
       description: "connect-to-your-runnable"
+      optional: true
