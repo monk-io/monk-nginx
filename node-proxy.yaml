@@ -1,0 +1,86 @@
+namespace: nginx
+
+node-proxy:
+  defines: runnable
+  containers:
+    nginx:
+      image: docker.io/bitnami/nginx
+      image-tag: latest
+  services:
+    nginx:
+      port: <- $listen-port
+      host-port: <- $host-port
+      container: nginx
+      protocol: tcp
+      publish: true
+#  connections:
+#    backend:
+#      runnable: example/backend
+#      service: api
+  variables:
+    host-port:
+      type: int
+      value: 443
+    listen-port:
+      type: int
+      value: 8443
+    backend-host:
+      type: string
+      value: <- connection-hostname("backend")
+    backend-port:
+      value: <- connection-port("backend")
+      type: int
+    resolver-ip:
+      value: <- get-resolver-ip
+      type: string
+    proxy-pass-protocol:
+      type: string
+      value: http
+  files:
+    defines: files
+    nginx-cert:
+      mode: 511
+      container: nginx
+      path: /etc/nginx/conf.d/nginx.crt
+      contents: <- ssl-certificate
+    nginx-key:
+      mode: 511
+      container: nginx
+      path: /etc/nginx/conf.d/nginx.key
+      contents: <- ssl-private-key
+    server-def:
+      mode: 511
+      container: nginx
+      path: /opt/bitnami/nginx/conf/server_blocks/reverse_proxy.conf
+      contents: |
+        server {
+          listen 0.0.0.0:{{ v "listen-port" }} default_server ssl;
+
+          resolver {{ v "resolver-ip" }} valid=30s;
+        
+          proxy_pass_request_headers on;
+          proxy_http_version 1.1;
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Forwarded-Server $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header Host $host;
+        
+          # SSL
+          ssl_certificate /etc/nginx/conf.d/nginx.crt;
+          ssl_certificate_key /etc/nginx/conf.d/nginx.key;
+        
+          # Recommendations from https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
+          ssl_protocols TLSv1.1 TLSv1.2;
+          ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+          ssl_prefer_server_ciphers on;
+          ssl_session_cache shared:SSL:10m;
+
+          {{ if v "backend-host" }}
+          set $backend_upstream http://{{ v "backend-host" }}:{{ v "backend-port" }};
+          location / {
+            proxy_pass $backend_upstream;
+          }
+          {{ end }}
+        }
