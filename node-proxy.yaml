@@ -4,7 +4,7 @@ node-proxy:
   defines: runnable
   containers:
     nginx:
-      image: docker.io/bitnami/nginx
+      image: docker.io/bitnamilegacy/nginx
       image-tag: latest
   services:
     nginx:
