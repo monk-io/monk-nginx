@@ -1,0 +1,174 @@
+---
+title: Nginx
+description: Ready-to-run Nginx container template you can run directly or inherit to integrate a high-performance web server and reverse proxy into your infrastructure.
+primary_category: web-server
+tags: [nginx, web-server, proxy, template, runnable, reverse-proxy, load-balancer]
+integration_type: template
+hosting_models: [self-hosted]
+website_url: https://nginx.org/
+docs_url: https://nginx.org/en/docs/
+publisher: monk.io
+---
+
+## Overview
+
+This template provides a production‑ready Nginx instance as a Monk runnable. You can:
+
+- Run it directly to get a managed Nginx web server with sensible defaults
+- Inherit it in your own runnable to serve static content, reverse proxy, or load balance traffic
+
+Nginx is a high-performance HTTP server and reverse proxy, as well as an IMAP/POP3 proxy server. It's known for its high performance, stability, rich feature set, simple configuration, and low resource consumption.
+
+## What this template manages
+
+- Nginx container (`nginx` image, configurable tag)
+- Network services on ports 80 (HTTP) and 443 (HTTPS)
+- Custom nginx.conf configuration
+- Static content serving
+- Reverse proxy capabilities
+
+## Quick start (run directly)
+
+1) Load templates
+
+```bash
+monk load MANIFEST
+```
+
+2) Run Nginx with defaults
+
+```bash
+monk run nginx/nginx
+```
+
+3) Customize configuration (recommended via inheritance)
+
+Running directly uses the defaults defined in this template's `variables`. Configuration added with custom files will not affect this runnable unless you inherit it and override those files.
+
+- Preferred: inherit and customize variables or files as shown below.
+- Alternative: fork/clone and edit the `variables` in `nginx/nginx.yaml`, then `monk load MANIFEST` and run.
+
+Once started, access Nginx at `http://localhost:80`.
+
+## Configuration
+
+Key variables you can customize in this template:
+
+```yaml
+variables:
+  nginx-image-tag: "latest"           # container image tag  
+  http-port: "80"                     # HTTP port (env: HTTP_PORT)
+  https-port: "443"                   # HTTPS port (env: HTTPS_PORT)
+  worker-processes: "auto"            # worker processes count
+  worker-connections: "1024"          # connections per worker
+```
+
+Custom nginx.conf can be provided via the `files` section in the template. Static content and configuration files are typically mounted from the host or defined inline.
+
+## Use by inheritance (recommended for apps)
+
+Inherit the Nginx runnable in your application to create a reverse proxy or serve static content. Example:
+
+```yaml
+namespace: myapp
+web:
+  defines: runnable
+  inherits: nginx/nginx
+  files:
+    nginx-conf:
+      container: nginx
+      path: /etc/nginx/nginx.conf
+      contents: |
+        events {
+          worker_connections 1024;
+        }
+        http {
+          upstream backend {
+            server api:8080;
+          }
+          server {
+            listen 80;
+            location / {
+              proxy_pass http://backend;
+              proxy_set_header Host $host;
+            }
+          }
+        }
+api:
+  defines: runnable
+  containers:
+    api:
+      image: myorg/api
+  connections:
+    proxy:
+      runnable: web
+      service: nginx
+```
+
+Then run your application group:
+
+```bash
+monk run myapp/api
+```
+
+## Ports and connectivity
+
+- Service: `nginx` on TCP port `80` (HTTP) and `443` (HTTPS)
+- From other runnables in the same process group, use `connection-hostname("<connection-name>")` to resolve the Nginx host.
+
+## Persistence and configuration
+
+- Configuration files can be mounted via the `files` section in your runnable definition.
+- Static content can be served by mounting host directories or defining inline content.
+- SSL/TLS certificates should be mounted from the host or provided via secrets management.
+- Logs are available via `monk logs` command or can be persisted to host volumes if needed.
+
+## Features
+
+- High-performance static file serving
+- Reverse proxy with caching
+- Load balancing (round-robin, least connections, IP hash)
+- SSL/TLS termination
+- HTTP/2 support
+- WebSocket proxying
+- URL rewriting and redirects
+- Access control and rate limiting
+
+## Use cases
+
+Nginx excels at:
+- Serving static websites and assets
+- Reverse proxy for microservices
+- Load balancing across application servers
+- SSL/TLS termination
+- API gateway
+- Content caching
+
+
+## Related templates
+
+- Combine with application backends (Node.js, Python, PHP)
+- Use `certbot/` or `traefik/` for SSL/TLS certificates
+- Integrate with `prometheus-grafana/` for monitoring
+
+## Troubleshooting
+
+- Test nginx configuration syntax:
+
+```bash
+monk do nginx/nginx/test-config
+```
+
+- Verify Nginx is responding:
+
+```bash
+curl http://localhost:80
+```
+
+- For SSL/HTTPS setup, ensure certificates are properly mounted and paths are correct.
+- If configuration changes don't take effect, ensure you've reloaded or restarted the container.
+- Check logs:
+
+```bash
+monk logs -l 500 -f nginx/nginx
+```
