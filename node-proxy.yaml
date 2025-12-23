@@ -20,13 +20,15 @@ node-proxy:
   variables:
     host-port:
       type: int
-      value: 443
+      value: 9443
+      description: use 9443 because 443 and 80 can be used by ingress plugin on every node
     listen-port:
       type: int
       value: 8443
     backend-host:
       type: string
       value: <- connection-hostname("backend")
+      description: Inherit this runnable in your own template and add connection with name "backend" to the service you want to expose.
     backend-port:
       value: <- connection-port("backend")
       type: int
